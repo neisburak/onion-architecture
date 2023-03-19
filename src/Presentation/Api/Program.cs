@@ -6,7 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddApplication()
         .AddInfrastructure()
-        .AddEntityFrameworkCore();
+        .AddEntityFrameworkCore()
+            .AddDbContext(options =>
+            {
+                options.ConnectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new ArgumentNullException("Connection string can not be empty.");
+            });
 }
 
 var app = builder.Build();
@@ -20,6 +24,6 @@ var app = builder.Build();
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
-    
+
     app.Run();
 }
