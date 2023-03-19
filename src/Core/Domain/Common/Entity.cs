@@ -1,6 +1,8 @@
 namespace Domain.Common;
 
-public class Entity
+public class Entity : Entity<int> { }
+
+public class Entity<TKey>
 {
-    public int Id { get; set; }
+    public TKey Id { get; set; } = default!;
 }
