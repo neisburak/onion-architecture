@@ -1,4 +1,4 @@
-public static class ApiInitilazer
+public static class ApiInitializer
 {
     public static void AddApi(this WebApplicationBuilder builder)
     {
