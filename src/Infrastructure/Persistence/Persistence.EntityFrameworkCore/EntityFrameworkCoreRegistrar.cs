@@ -1,5 +1,5 @@
 using Application.Interfaces;
-using Application.Interfaces.Repositories;
+using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistence.EntityFrameworkCore;

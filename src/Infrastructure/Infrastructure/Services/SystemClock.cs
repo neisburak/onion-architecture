@@ -2,7 +2,7 @@ using Application.Interfaces;
 
 namespace Infrastructure.Services;
 
-public class SystemClockManager : ISystemClock
+public class SystemClock : ISystemClock
 {
     public DateTime Now => DateTime.UtcNow;
 }

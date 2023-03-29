@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Domain.Common;
 
-namespace Application.Interfaces.Repositories;
+namespace Domain.Repositories;
 
 public abstract class RepositoryBase<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey>, new()
 {
@@ -79,7 +79,7 @@ public abstract class RepositoryBase<TEntity, TKey> : IRepository<TEntity, TKey>
 
         var idValue = Convert.ChangeType(id, typeof(TKey));
 
-        Expression<Func<object>> closure = () => idValue;
+        Expression<Func<object?>> closure = () => idValue;
         var rightExpression = Expression.Convert(closure.Body, leftExpression.Type);
 
         var lambdaBody = Expression.Equal(leftExpression, rightExpression);

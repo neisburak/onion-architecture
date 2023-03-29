@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
-using Application.Interfaces.Repositories;
 using Domain.Common;
+using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.EntityFrameworkCore.Repositories;
