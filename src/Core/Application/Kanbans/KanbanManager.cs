@@ -88,5 +88,9 @@ public class KanbanManager : IKanbanService
         await _unitOfWork.CommitAsync(cancellationToken);
     }
 
-    public Task DeleteAsync(int id, CancellationToken cancellationToken = default) => _kanbanRepository.RemoveAsync(id, cancellationToken);
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
+    {
+        await _kanbanRepository.RemoveAsync(id, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
+    }
 }
