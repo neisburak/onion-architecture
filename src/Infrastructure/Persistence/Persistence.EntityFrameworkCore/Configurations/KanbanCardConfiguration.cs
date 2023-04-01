@@ -10,5 +10,7 @@ public class KanbanCardConfiguration : IEntityTypeConfiguration<KanbanCard>
     {
         builder.Property(p => p.Name).IsRequired();
         builder.Property(p => p.Name).HasMaxLength(128);
+
+        builder.OwnsOne(h => h.Color);
     }
 }
