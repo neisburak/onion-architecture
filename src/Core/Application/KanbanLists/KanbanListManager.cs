@@ -76,6 +76,7 @@ public class KanbanListManager : IKanbanListService
 
         if (entity is null) throw new EntityNotFoundException($"{nameof(KanbanList)} with {id} not found.");
 
+        entity.KanbanId = listForUpdate.KanbanId;
         entity.Name = listForUpdate.Name;
 
         await _kanbanListRepository.UpdateAsync(entity, cancellationToken);

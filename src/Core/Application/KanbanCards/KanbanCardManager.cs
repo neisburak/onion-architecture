@@ -54,6 +54,7 @@ public class KanbanCardManager : IKanbanCardService
 
         if (entity is null) throw new EntityNotFoundException($"{nameof(KanbanCard)} with {id} not found.");
 
+        entity.ListId = cardForUpdate.ListId;
         entity.Name = cardForUpdate.Name;
         entity.Description = cardForUpdate.Description;
         if (!string.IsNullOrEmpty(cardForUpdate.Color)) entity.Color = Color.From(cardForUpdate.Color);
