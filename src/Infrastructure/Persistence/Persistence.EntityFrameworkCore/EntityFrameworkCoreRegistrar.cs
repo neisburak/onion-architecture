@@ -11,10 +11,12 @@ public static class EntityFrameworkCoreRegistrar
 {
     public static IEntityFrameworkBuilder AddEntityFrameworkCore(this IAppBuilder builder)
     {
-        builder.Services.TryAddScoped(typeof(IRepository<,>), typeof(EfCoreRepository<,>));
-        builder.Services.TryAddScoped(typeof(IRepository<>), typeof(EfCoreRepository<>));
+        builder.Services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        builder.Services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         builder.Services.TryAddScoped<IUnitOfWork, UnitOfWork>();
+        
+        builder.Services.TryAddScoped<IAsyncQueryExecuter, AsyncQueryExecuter>();
 
         builder.Services.TryAddScoped<IKanbanRepository, KanbanRepository>();
         builder.Services.TryAddScoped<IKanbanListRepository, KanbanListRepository>();

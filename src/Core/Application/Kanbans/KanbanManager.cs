@@ -1,39 +1,58 @@
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Kanbans.Models;
+using Domain.Entities;
 using Domain.Repositories;
+using Mapster;
 
 namespace Application.Kanbans;
 
 public class KanbanManager : IKanbanService
 {
     private readonly IKanbanRepository _kanbanRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAsyncQueryExecuter _queryExecuter;
 
-    public KanbanManager(IKanbanRepository kanbanRepository)
+    public KanbanManager(IKanbanRepository kanbanRepository, IAsyncQueryExecuter queryExecuter, IUnitOfWork unitOfWork)
     {
         _kanbanRepository = kanbanRepository;
+        _queryExecuter = queryExecuter;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task CreateAsync(KanbanForUpsert kanbanForInsert)
+    public async Task<KanbanForView?> GetAsync(int id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await _kanbanRepository.GetAsync(id, cancellationToken);
+
+        if (entity is null) throw new EntityNotFoundException($"{nameof(Kanban)} with {id} not found.");
+        return entity.Adapt<KanbanForView>();
     }
 
-    public Task DeleteAsync(int id)
+    public async Task<IEnumerable<KanbanForView>> GetAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var queryable = await _kanbanRepository.GetAsync(cancellationToken);
+
+        return await _queryExecuter.ToListAsync(queryable.ProjectToType<KanbanForView>(), cancellationToken);
     }
 
-    public Task<KanbanForView?> GetAsync(int id)
+    public async Task CreateAsync(KanbanForUpsert kanbanForInsert, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = kanbanForInsert.Adapt<Kanban>();
+        await _kanbanRepository.InsertAsync(entity, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
     }
 
-    public Task<IEnumerable<KanbanForView>> GetAsync()
+    public async Task UpdateAsync(int id, KanbanForUpsert kanbanForUpdate, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var entity = await _kanbanRepository.GetAsync(id, cancellationToken);
+
+        if (entity is null) throw new EntityNotFoundException($"{nameof(Kanban)} with {id} not found.");
+
+        entity.Name = kanbanForUpdate.Name;
+
+        await _kanbanRepository.UpdateAsync(entity, cancellationToken);
+        await _unitOfWork.CommitAsync(cancellationToken);
     }
 
-    public Task UpdateAsync(int id, KanbanForUpsert kanbanForUpdate)
-    {
-        throw new NotImplementedException();
-    }
+    public Task DeleteAsync(int id, CancellationToken cancellationToken = default) => _kanbanRepository.RemoveAsync(id, cancellationToken);
 }

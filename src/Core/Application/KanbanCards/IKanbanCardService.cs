@@ -4,9 +4,9 @@ namespace Application.KanbanCards;
 
 public interface IKanbanCardService
 {
-    Task<CardForView?> GetAsync(int id);
-    Task<IEnumerable<CardForView>> GetAsync();
-    Task CreateAsync(CardForUpsert cardForInsert);
-    Task UpdateAsync(int id, CardForUpsert cardForUpdate);
-    Task DeleteAsync(int id);
+    Task<CardForView?> GetAsync(int id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<CardForView>> GetAsync(CancellationToken cancellationToken = default);
+    Task CreateAsync(CardForUpsert cardForInsert, CancellationToken cancellationToken = default);
+    Task UpdateAsync(int id, CardForUpsert cardForUpdate, CancellationToken cancellationToken = default);
+    Task DeleteAsync(int id, CancellationToken cancellationToken = default);
 }

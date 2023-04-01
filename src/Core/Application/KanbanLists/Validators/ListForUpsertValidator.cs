@@ -7,5 +7,6 @@ public class ListForUpsertValidator : AbstractValidator<ListForUpsert>
 {
     public ListForUpsertValidator()
     {
+        RuleFor(r => r.Name).NotNull().NotEmpty();
     }
 }
