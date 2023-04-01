@@ -33,7 +33,7 @@ public class Color : ValueObject
 
     public string Code { get; private set; } = "#000000";
 
-    public static implicit operator string(Color color) => color.ToString();
+    public static implicit operator string(Color? color) => color?.ToString() ?? default!;
 
     public static explicit operator Color(string code) => From(code);
 
