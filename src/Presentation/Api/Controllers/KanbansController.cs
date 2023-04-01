@@ -23,6 +23,15 @@ public class KanbansController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id}/details")]
+    public async Task<IActionResult> GetDetailsAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var result = await _kanbanService.GetDetailsAsync(id, cancellationToken);
+
+        if (result is null) return NotFound();
+        return Ok(result);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken = default)
     {

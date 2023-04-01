@@ -1,5 +1,7 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.KanbanCards.Models;
+using Application.KanbanLists.Models;
 using Application.Kanbans.Models;
 using Domain.Entities;
 using Domain.Repositories;
@@ -26,6 +28,38 @@ public class KanbanManager : IKanbanService
 
         if (entity is null) throw new EntityNotFoundException($"{nameof(Kanban)} with {id} not found.");
         return entity.Adapt<KanbanForView>();
+    }
+
+    public async Task<DetailForKanban?> GetDetailsAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var queryable = from kanban in await _kanbanRepository.GetAsync(cancellationToken)
+                        where kanban.Id == id
+                        orderby kanban.Name
+                        select new DetailForKanban
+                        {
+                            Id = kanban.Id,
+                            Name = kanban.Name,
+                            CreatedOn = kanban.CreatedOn,
+                            ModifiedOn = kanban.ModifiedOn,
+                            Lists = kanban.Lists.Select(s => new DetailForList
+                            {
+                                Id = s.Id,
+                                Name = s.Name,
+                                CreatedOn = s.CreatedOn,
+                                ModifiedOn = s.ModifiedOn,
+                                Order = s.Order,
+                                Cards = s.Cards.Select(s => new CardForView
+                                {
+                                    Id = s.Id,
+                                    Name = s.Name,
+                                    Color = s.Color,
+                                    Description = s.Description,
+                                    Priority = s.Priority
+                                })
+                            })
+                        };
+
+        return await _queryExecuter.FirstOrDefaultAsync(queryable, cancellationToken);
     }
 
     public async Task<IEnumerable<KanbanForView>> GetAsync(CancellationToken cancellationToken = default)
