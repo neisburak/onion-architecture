@@ -9,6 +9,7 @@ public static class InfrastructureRegistrar
     public static IAppBuilder AddInfrastructure(this IAppBuilder builder)
     {
         builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
+        builder.Services.TryAddSingleton<IMailService, MailManager>();
 
         return builder;
     }
