@@ -1,7 +1,4 @@
-using Application.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Persistence.EntityFrameworkCore.Internal;
+namespace Microsoft.Extensions.DependencyInjection;
 
 internal class EntityFrameworkBuilder : IEntityFrameworkBuilder
 {

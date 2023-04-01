@@ -1,9 +1,8 @@
-using Application.Interfaces;
+using Application.Common.Interfaces;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistence.EntityFrameworkCore;
-using Persistence.EntityFrameworkCore.Internal;
 using Persistence.EntityFrameworkCore.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -14,6 +13,8 @@ public static class EntityFrameworkCoreRegistrar
     {
         builder.Services.TryAddScoped(typeof(IRepository<,>), typeof(EfCoreRepository<,>));
         builder.Services.TryAddScoped(typeof(IRepository<>), typeof(EfCoreRepository<>));
+
+        builder.Services.TryAddScoped<IUnitOfWork, UnitOfWork>();
 
         return new EntityFrameworkBuilder(builder);
     }

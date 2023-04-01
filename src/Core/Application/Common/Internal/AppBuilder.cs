@@ -1,7 +1,4 @@
-using Application.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Application.Internal;
+namespace Microsoft.Extensions.DependencyInjection;
 
 internal class AppBuilder : IAppBuilder
 {
