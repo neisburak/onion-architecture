@@ -33,16 +33,13 @@ public class KanbanCardManager : IKanbanCardService
     {
         var queryable = await _kanbanCardRepository.GetAsync(cancellationToken);
 
-        return await _queryExecuter.ToListAsync(queryable.ProjectToType<CardForView>(), cancellationToken);
+        var result = await _queryExecuter.ToListAsync(queryable, cancellationToken);
+        return result.Adapt<List<CardForView>>();
     }
 
     public async Task CreateAsync(CardForUpsert cardForInsert, CancellationToken cancellationToken = default)
     {
-        var config = new TypeAdapterConfig().NewConfig<CardForUpsert, KanbanCard>()
-            .Map(m => m.Name, m => m.Name)
-            .Map(m => m.Description, m => m.Description)
-            .Map(m => m.Color != null ? Color.From(m.Color) : null, m => m.Color)
-            .Map(m => m.Priority, m => m.Priority).Config;
+        var config = new TypeAdapterConfig().NewConfig<CardForUpsert, KanbanCard>().PreserveReference(true).Config;
         var entity = cardForInsert.Adapt<KanbanCard>(config);
         await _kanbanCardRepository.InsertAsync(entity, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

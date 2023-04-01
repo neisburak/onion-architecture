@@ -21,20 +21,6 @@ public class Repository<TEntity, TKey> : RepositoryBase<TEntity, TKey>, IReposit
         DbSet = DbContext.Set<TEntity>();
     }
 
-    public DbContext GetDbContext() => DbContext;
-    public Task<DbContext> GetDbContextAsync(CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(GetDbContext());
-    }
-
-    public DbSet<TEntity> GetDbSet() => DbSet;
-    public Task<DbSet<TEntity>> GetDbSetAsync(CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(GetDbSet());
-    }
-
     public override TEntity? Get(TKey id) => DbSet.FirstOrDefault(CreateEqualityExpressionForId(id));
     public override Task<TEntity?> GetAsync(TKey id, CancellationToken cancellationToken = default)
     {
@@ -42,14 +28,14 @@ public class Repository<TEntity, TKey> : RepositoryBase<TEntity, TKey>, IReposit
         return DbSet.FirstOrDefaultAsync(CreateEqualityExpressionForId(id), cancellationToken);
     }
 
-    public override IQueryable<TEntity> Get() => DbSet;
+    public override IQueryable<TEntity> Get() => DbSet.AsNoTracking();
     public override Task<IQueryable<TEntity>> GetAsync(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(Get());
     }
 
-    public override IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate) => DbSet.Where(predicate);
+    public override IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate) => DbSet.Where(predicate).AsNoTracking();
     public override Task<IQueryable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

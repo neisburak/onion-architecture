@@ -33,7 +33,7 @@ public class KanbanListManager : IKanbanListService
 
     public async Task<DetailForList?> GetDetailsAsync(int id, CancellationToken cancellationToken = default)
     {
-        var queryable = from list in await _kanbanListRepository.GetAsync(cancellationToken)
+        var queryable = from list in _kanbanListRepository.Get()
                         where list.Id == id
                         orderby list.Order descending
                         select new DetailForList
@@ -78,6 +78,7 @@ public class KanbanListManager : IKanbanListService
 
         entity.KanbanId = listForUpdate.KanbanId;
         entity.Name = listForUpdate.Name;
+        entity.Order = listForUpdate.Order;
 
         await _kanbanListRepository.UpdateAsync(entity, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);

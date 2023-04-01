@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers;
 
 [ApiController, Route("api/[controller]")]
-public class KanbanCardsController : ControllerBase
+public class CardsController : ControllerBase
 {
     private readonly IKanbanCardService _kanbanCardService;
 
-    public KanbanCardsController(IKanbanCardService kanbanCardService)
+    public CardsController(IKanbanCardService kanbanCardService)
     {
         _kanbanCardService = kanbanCardService;
     }
