@@ -16,6 +16,10 @@ public static class EntityFrameworkCoreRegistrar
 
         builder.Services.TryAddScoped<IUnitOfWork, UnitOfWork>();
 
+        builder.Services.TryAddScoped<IKanbanRepository, KanbanRepository>();
+        builder.Services.TryAddScoped<IKanbanListRepository, KanbanListRepository>();
+        builder.Services.TryAddScoped<IKanbanCardRepository, KanbanCardRepository>();
+
         return new EntityFrameworkBuilder(builder);
     }
 

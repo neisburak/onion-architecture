@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.EntityFrameworkCore.Repositories;
 
-public class EfCoreRepository<TEntity> : EfCoreRepository<TEntity, int>, IRepository<TEntity> where TEntity : Entity, new()
+public class EfCoreRepository<TEntity> : EfCoreRepository<TEntity, int>, IRepository<TEntity> where TEntity : Entity<int>, new()
 {
-    public EfCoreRepository(DbContext context) : base(context) { }
+    public EfCoreRepository(AppDbContext context) : base(context) { }
 }
 
 public class EfCoreRepository<TEntity, TKey> : RepositoryBase<TEntity, TKey>, IRepository<TEntity, TKey> where TEntity : Entity<TKey>, new()
 {
-    protected DbContext DbContext { get; }
+    protected AppDbContext DbContext { get; }
     protected DbSet<TEntity> DbSet { get; }
 
-    public EfCoreRepository(DbContext context)
+    public EfCoreRepository(AppDbContext context)
     {
         DbContext = context;
         DbSet = DbContext.Set<TEntity>();
