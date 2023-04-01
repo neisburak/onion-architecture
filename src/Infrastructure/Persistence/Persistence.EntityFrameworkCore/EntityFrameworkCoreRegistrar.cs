@@ -3,6 +3,7 @@ using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistence.EntityFrameworkCore;
+using Persistence.EntityFrameworkCore.Interceptors;
 using Persistence.EntityFrameworkCore.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -11,11 +12,13 @@ public static class EntityFrameworkCoreRegistrar
 {
     public static IEntityFrameworkBuilder AddEntityFrameworkCore(this IAppBuilder builder)
     {
+        builder.Services.TryAddScoped<AuditableEntitySaveChangesInterceptor>();
+
         builder.Services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         builder.Services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         builder.Services.TryAddScoped<IUnitOfWork, UnitOfWork>();
-        
+
         builder.Services.TryAddScoped<IAsyncQueryExecuter, AsyncQueryExecuter>();
 
         builder.Services.TryAddScoped<IKanbanRepository, KanbanRepository>();
